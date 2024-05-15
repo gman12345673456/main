@@ -74,6 +74,13 @@ def on_text_change(event):
 
 
     # check against list of common passwords
+
+    if text == "Jai":
+        label.text = "😶‍🌫️" 
+    elif text == "Lucas":
+        label.text = "😡"
+    elif text == "Gus":
+        label.text = "Sigma"
     
 
 app = gp.GooeyPieApp('Might be useful for your assessment')
