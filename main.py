@@ -70,9 +70,6 @@ def on_text_change(event):
     if len(text) < 10:
         print("Text under 10 please")
 
-    # check for symbols
-
-
     # check against list of common passwords
 
     if text == "Jai":
@@ -81,7 +78,11 @@ def on_text_change(event):
         label.text = "😡"
     elif text == "Gus":
         label.text = "Sigma"
-    
+    elif text == "Jacob G":
+        label.text = "👴🏿"
+    # check for symbols
+   
+
 
 app = gp.GooeyPieApp('Might be useful for your assessment')
 
