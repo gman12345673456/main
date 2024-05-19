@@ -59,6 +59,10 @@
 
 # app.run()
 
+
+
+
+
 import gooeypie as gp
 
 def on_text_change(event):
@@ -66,38 +70,41 @@ def on_text_change(event):
     print(text)
 
     # run the logic for checks
-    # check for length
-    if len(text) < 10:
-        label.text = "Password under 10 characters"
+    # ren check for length
+    if len(text) < 7:
+        label.text = "Password above 7 characters"
     else:
         label.text = "Password is accepted"
-    
-    
 
-    # check against list of common passwords
+# Check against list of common passwords
     common_passwords = ["123456", "password", "123456789", "12345678", "12345", "1234567", "1234567890"]
     if text in common_passwords:
         label.text = "This is a common password."
+    
 
-    # specific name checks
+    # Specific name checks
     if text == "Jai":
-        label.text = "😶‍🌫️" 
+        label.text = "😶‍🌫️"
     elif text == "Lucas":
         label.text = "😡"
     elif text == "Gus":
         label.text = "Sigma"
     elif text == "Jacob G":
         label.text = "👴🏿"
-    
-    # check for invalid symbols
+    # check for symbols
+# Check for invalid symbols
     invalid_symbols = {'&', '%', '$', '@', '!', '*', '^'}
     if any(character in invalid_symbols for character in text):
         label.text = "Not valid use of text."
+    # elif text == ('^', '$', '*', '@', '!', '_','-', ):
+    #     text_box.label 
+    #     print ("invaild use of text") 
 
-app = gp.GooeyPieApp('Password Checker and Generator')
+
+app = gp.GooeyPieApp('Might be useful for your assessment')
 
 text_box = gp.Textbox(app)
-text_box.add_event_listener('input', on_text_change)
+text_box.add_event_listener('change', on_text_change)
 
 label = gp.Label(app, 'blank')
 
@@ -105,4 +112,4 @@ app.set_grid(2, 1)
 app.add(text_box, 1, 1)
 app.add(label, 2, 1)
 
-app.run()
+app.run() 
