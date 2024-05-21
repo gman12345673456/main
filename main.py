@@ -77,31 +77,30 @@ def on_text_change(event):
         label.text = "Password is accepted"
 
 # Check against list of common passwords
-    common_passwords = ["123456", "password", "123456789", "12345678", "12345", "1234567", "1234567890"]
+    common_passwords = ["123456", "password", "123456789", "12345678", "12345", "1234567", "1234567890", "Password", "Admin"]
     if text in common_passwords:
         label.text = "This is a common password."
     
 
     # Specific name checks
-    if text == "Jai":
-        label.text = "😶‍🌫️"
-    elif text == "Lucas":
-        label.text = "😡"
+    if text == "060207":
+        label.text = "No personal dates"
+    elif text == "Gus simmonds":
+        label.text = "No full name"
     elif text == "Gus":
-        label.text = "Sigma"
-    elif text == "Jacob G":
-        label.text = "👴🏿"
+        label.text = "Under 10 not accepted"
+    elif text == "2007":
+        label.text = "No birth year"
     # check for symbols
 # Check for invalid symbols
     invalid_symbols = {'&', '%', '$', '@', '!', '*', '^'}
     if any(character in invalid_symbols for character in text):
-        label.text = "Not valid use of text."
-    # elif text == ('^', '$', '*', '@', '!', '_','-', ):
-    #     text_box.label 
-    #     print ("invaild use of text") 
+        label.text = "Not valid use of text (No symbols)."
+
+ 
 
 
-app = gp.GooeyPieApp('Might be useful for your assessment')
+app = gp.GooeyPieApp('Might be useful code for your assessment')
 
 text_box = gp.Textbox(app)
 text_box.add_event_listener('change', on_text_change)
