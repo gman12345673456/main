@@ -88,7 +88,7 @@ def on_text_change(event):
     elif text == "Gus simmonds":
         label.text = "No full name"
     elif text == "Gus":
-        label.text = "Under 10 not accepted"
+        label.text = "Under 10 not accepted no name"
     elif text == "2007":
         label.text = "No birth year"
     # check for symbols
@@ -102,13 +102,17 @@ def on_text_change(event):
 
 app = gp.GooeyPieApp('Might be useful code for your assessment')
 
-text_box = gp.Textbox(app)
+text_box = gp.Textbox(app, 60, 10)
 text_box.add_event_listener('change', on_text_change)
 
 label = gp.Label(app, 'blank')
 
-app.set_grid(2, 1)
+
+# Creating a larger grid size
+app.set_grid(4, 2)  # Changed grid size to 4x1
+
+# Adding the elements to the grid
 app.add(text_box, 1, 1)
 app.add(label, 2, 1)
 
-app.run() 
+app.run()
