@@ -127,42 +127,60 @@ def update_progress_bar():
         app.refresh()
         time.sleep(0.02)
 
+def check_single_capital(password):
+    capital_count = 0
+    for char in password:
+        if 65 <= ord(char) <= 90:  # ASCII values for 'A' to 'Z'
+            capital_count += 1
+    
+    if capital_count == 1:
+        return "Password has exactly one capital letter."
+    else:
+        return "Password must contain exactly one capital letter."
+
 def on_text_change(event):
     text = text_box.text
     print(text)
 
-    # run the logic for checks
-    if len(text) < 7:
-        label.text = "Password above 7 characters"
+    message = ""
+
+    # Initial check for length
+    if len(text) < 8:
+        message += "Password must be at least 8 characters long.\n"
     else:
-        label.text = "Password is accepted"
+        message += "Password is accepted\n"
 
     # Check against list of common passwords
     common_passwords = ["123456", "password", "123456789", "12345678", "12345", "1234567", "1234567890", "Password", "Admin"]
     if text in common_passwords:
-        label.text = "This is a common password."
-    
+        message += "This is a common password.\n"
+
     # Specific name checks
     if text == "060207":
-        label.text = "No personal dates"
+        message += "No personal dates.\n"
     elif text == "Gus simmonds":
-        label.text = "No full name"
+        message += "No full names.\n"
     elif text == "Gus":
-        label.text = "Under 10 not accepted no name"
+        message += "No short names.\n"
     elif text == "2007":
-        label.text = "No birth year"
+        message += "No birth years.\n"
 
     # Check for invalid symbols
     invalid_symbols = {'&', '%', '$', '@', '!', '*', '^'}
     if any(character in invalid_symbols for character in text):
-        label.text = "Not valid use of text (No symbols)."
+        message += "No symbols allowed in the password.\n"
+
+    # Check for exactly one uppercase letter
+    message += check_single_capital(text)
+
+    label.text = message.strip()  # Strip any trailing whitespace
 
 app = gp.GooeyPieApp('Password Checker with Progress Bar')
 
 # Create the components
 text_box = gp.Textbox(app, 60, 10)
 text_box.add_event_listener('change', on_text_change)
-label = gp.Label(app, 'blank')
+label = gp.Label(app, 'Welcome to the Password Protection Checker. Please input your password above (must be at least 8 characters long and no personal information).')
 thinking_pb = gp.Progressbar(app)
 
 # Set up the grid
@@ -173,4 +191,3 @@ app.add(thinking_pb, 2, 1, column_span=2, fill=True)
 app.add(label, 3, 1)
 
 app.run()
-
