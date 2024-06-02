@@ -133,22 +133,17 @@ def check_single_capital(password):
         if 65 <= ord(char) <= 90:  # ASCII values for 'A' to 'Z'
             capital_count += 1
     
-    if capital_count == 1:
-        return "Password has exactly one capital letter."
-    else:
-        return "Password must contain exactly one capital letter."
+    return capital_count == 1
 
 def on_text_change(event):
     text = text_box.text
-    print(text)
-
     message = ""
+    all_conditions_met = True
 
     # Initial check for length
     if len(text) < 8:
         message += "Password must be at least 8 characters long.\n"
-    else:
-        message += "Password is accepted\n"
+        all_conditions_met = False
 
     # Check against list of common passwords
     common_passwords = ["123456", "password", "123456789", "12345678", "12345", "1234567", "1234567890", "Password", "Admin"]
@@ -166,16 +161,23 @@ def on_text_change(event):
         message += "No birth years.\n"
 
     # Check for invalid symbols
-    invalid_symbols = {'&', '%', '$', '@', '!', '*', '^'}
+    invalid_symbols = {'&', '%', '$', '@', '!', '*', '^', '#', '()'} 
     if any(character in invalid_symbols for character in text):
         message += "No symbols allowed in the password.\n"
 
     # Check for exactly one uppercase letter
-    message += check_single_capital(text)
+    if not check_single_capital(text):
+        message += "Password must contain exactly one capital letter.\n"
+        all_conditions_met = False
+
+    if all_conditions_met:
+        message = "Password is accepted."
+    else:
+        message += "Please check all parameters."
 
     label.text = message.strip()  # Strip any trailing whitespace
 
-app = gp.GooeyPieApp('Password Checker with Progress Bar')
+app = gp.GooeyPieApp('Password Checker')
 
 # Create the components
 text_box = gp.Textbox(app, 60, 10)
