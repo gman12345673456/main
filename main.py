@@ -118,22 +118,16 @@
 # app.run()
 
 import gooeypie as gp
-import time
-
-def update_progress_bar():
-    thinking_pb.value = 0
-    for steps in range(20):
-        thinking_pb.value += 5
-        app.refresh()
-        time.sleep(0.02)
 
 def check_single_capital(password):
     capital_count = 0
     for char in password:
         if 65 <= ord(char) <= 90:  # ASCII values for 'A' to 'Z'
             capital_count += 1
-    
     return capital_count == 1
+
+def copy_to_clipboard(event):
+    app.copy_to_clipboard(text_box.text)
 
 def on_text_change(event):
     text = text_box.text
@@ -144,11 +138,15 @@ def on_text_change(event):
     if len(text) < 8:
         message += "Password must be at least 8 characters long.\n"
         all_conditions_met = False
+    elif len(text) > 20:
+        message += "Password must not exceed 20 characters.\n"
+        all_conditions_met = False
 
     # Check against list of common passwords
     common_passwords = ["123456", "password", "123456789", "12345678", "12345", "1234567", "1234567890", "Password", "Admin"]
     if text in common_passwords:
         message += "This is a common password.\n"
+        all_conditions_met = False
 
     # Specific name checks
     if text == "060207":
@@ -161,9 +159,10 @@ def on_text_change(event):
         message += "No birth years.\n"
 
     # Check for invalid symbols
-    invalid_symbols = {'&', '%', '$', '@', '!', '*', '^', '#', '()'} 
+    invalid_symbols = {'&', '%', '$', '@', '!', '*', '^', '#', '()'}
     if any(character in invalid_symbols for character in text):
         message += "No symbols allowed in the password.\n"
+        all_conditions_met = False
 
     # Check for exactly one uppercase letter
     if not check_single_capital(text):
@@ -172,24 +171,33 @@ def on_text_change(event):
 
     if all_conditions_met:
         message = "Password is accepted."
+        copy_btn.enabled = True  # Enable the button if all conditions are met
     else:
-        message += "Please check all parameters."
+        copy_btn.enabled = False  # Disable the button if not all conditions are met
 
     label.text = message.strip()  # Strip any trailing whitespace
+
+    if text in number_limit  > 3:
+        print("Only 3 numbers please")
+        number_limit = all_conditions_met
+    else:
+        print("Right amount of numbers")
+
 
 app = gp.GooeyPieApp('Password Checker')
 
 # Create the components
-text_box = gp.Textbox(app, 60, 10)
+text_box = gp.Textbox(app, 45, 10)
 text_box.add_event_listener('change', on_text_change)
 label = gp.Label(app, 'Welcome to the Password Protection Checker. Please input your password above (must be at least 8 characters long and no personal information).')
-thinking_pb = gp.Progressbar(app)
+copy_btn = gp.Button(app, 'Copy to Clipboard', copy_to_clipboard)
+copy_btn.enabled = False  # Initially disable the button
 
 # Set up the grid
 app.set_grid(3, 2)
 app.set_column_weights(1, 0)
 app.add(text_box, 1, 1, valign='middle')
-app.add(thinking_pb, 2, 1, column_span=2, fill=True)
-app.add(label, 3, 1)
+app.add(copy_btn, 1, 2, valign='middle')  # Add the copy button next to the text box
+app.add(label, 2, 1, column_span=2)
 
 app.run()
