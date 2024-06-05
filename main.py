@@ -127,7 +127,8 @@ def check_single_capital(password):
     return capital_count == 1
 
 def copy_to_clipboard(event):
-    app.copy_to_clipboard(text_box.text)
+    if all_conditions_met:
+        app.copy_to_clipboard(text_box.text)
 
 def on_text_change(event):
     text = text_box.text
@@ -169,6 +170,13 @@ def on_text_change(event):
         message += "Password must contain exactly one capital letter.\n"
         all_conditions_met = False
 
+    # Check for number limit
+    number_count = sum(char.isdigit() for char in text)
+    max_number_count = 3  # Maximum number count parameter
+    if number_count > max_number_count:
+        message += f"No more than {max_number_count} numbers are allowed.\n"
+        all_conditions_met = False
+
     if all_conditions_met:
         message = "Password is accepted."
         copy_btn.enabled = True  # Enable the button if all conditions are met
@@ -177,17 +185,10 @@ def on_text_change(event):
 
     label.text = message.strip()  # Strip any trailing whitespace
 
-    if text in number_limit  > 3:
-        print("Only 3 numbers please")
-        number_limit = all_conditions_met
-    else:
-        print("Right amount of numbers")
-
-
 app = gp.GooeyPieApp('Password Checker')
 
 # Create the components
-text_box = gp.Textbox(app, 45, 10)
+text_box = gp.Textbox(app, 30, 5)
 text_box.add_event_listener('change', on_text_change)
 label = gp.Label(app, 'Welcome to the Password Protection Checker. Please input your password above (must be at least 8 characters long and no personal information).')
 copy_btn = gp.Button(app, 'Copy to Clipboard', copy_to_clipboard)
@@ -201,3 +202,4 @@ app.add(copy_btn, 1, 2, valign='middle')  # Add the copy button next to the text
 app.add(label, 2, 1, column_span=2)
 
 app.run()
+
