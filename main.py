@@ -116,8 +116,15 @@
 # app.add(label, 2, 1)
 
 # app.run()
+global score
+
 
 import gooeypie as gp
+
+
+def score_representation = "- - - - - - - - - -":
+for score in password == 100
+
 
 def check_single_capital(password):
     capital_count = 0
@@ -125,6 +132,7 @@ def check_single_capital(password):
         if 65 <= ord(char) <= 90:  # ASCII values for 'A' to 'Z'
             capital_count += 1
     return capital_count == 1
+
 
 def copy_to_clipboard(event):
     if all_conditions_met:
@@ -142,6 +150,8 @@ def on_text_change(event):
     elif len(text) > 20:
         message += "Password must not exceed 20 characters.\n"
         all_conditions_met = False
+    else:
+        score = score + 20
 
     # Check against list of common passwords
     common_passwords = ["123456", "password", "123456789", "12345678", "12345", "1234567", "1234567890", "Password", "Admin"]
@@ -169,6 +179,11 @@ def on_text_change(event):
     if not check_single_capital(text):
         message += "Password must contain exactly one capital letter.\n"
         all_conditions_met = False
+    else:
+        score = score + 10
+    
+    
+
 
     # Check for number limit
     number_count = sum(char.isdigit() for char in text)
@@ -177,6 +192,9 @@ def on_text_change(event):
         message += f"No more than {max_number_count} numbers are allowed.\n"
         all_conditions_met = False
 
+
+    #score
+
     if all_conditions_met:
         message = "Password is accepted."
         copy_btn.enabled = True  # Enable the button if all conditions are met
@@ -184,6 +202,9 @@ def on_text_change(event):
         copy_btn.enabled = False  # Disable the button if not all conditions are met
 
     label.text = message.strip()  # Strip any trailing whitespace
+
+
+
 
 app = gp.GooeyPieApp('Password Checker')
 
