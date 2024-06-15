@@ -168,11 +168,7 @@ def on_text_change(event):
     elif text == "2007":
         message += "No birth years.\n"
 
-    # Check for invalid symbols
-    invalid_symbols = {'&', '%', '$', '@', '!', '*', '^', '#', '()'}
-    if any(character in invalid_symbols for character in text):
-        message += "No symbols allowed in the password.\n"
-        all_conditions_met = False
+    
 
     # Check for exactly one uppercase letter
     if not check_single_capital(text):
@@ -191,6 +187,7 @@ def on_text_change(event):
         global_score += 20
 
     # Check for at least one lowercase letter
+    
     if re.search(r'[a-z]', text):
         global_score += 10
     else:
@@ -198,7 +195,7 @@ def on_text_change(event):
         all_conditions_met = False
 
     # Check for special characters
-    special_characters = {'@', '$', '!', '%', '*', '?', '&', '#'}
+    special_characters = {'&', '%', '$', '@', '!', '*', '^', '#', '()','[]', '_', '-','+', '~','`'}
     if any(character in special_characters for character in text):
         global_score += 10
     else:
@@ -239,7 +236,7 @@ app = gp.GooeyPieApp('Password Checker')
 # Create the components
 text_box = gp.Textbox(app, 30, 5)
 text_box.add_event_listener('change', on_text_change)
-label = gp.Label(app, 'Welcome to the Password Protection Checker. Please input your password above (must be at least 8 characters long and no personal information).')
+label = gp.Label(app, 'Welcome to the Password Protection Checker. Please input your password above ( No Personal information).')
 copy_btn = gp.Button(app, 'Copy to Clipboard', copy_to_clipboard)
 copy_btn.enabled = False  # Initially disable the button
 
