@@ -117,13 +117,12 @@
 
 # app.run()
 global score
-
-
 import gooeypie as gp
 
 
-def score_representation = "- - - - - - - - - -":
-for score in password == 100
+def score = score_representation = "- - - - - - - - - -":
+for score in password == 100:
+    if score == 10 = message += "Secure password"
 
 
 def check_single_capital(password):
