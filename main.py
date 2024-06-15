@@ -122,13 +122,6 @@ import re
 # Global score variable
 global_score = 0
 
-def check_single_capital(password):
-    capital_count = 0
-    for char in password:
-        if 65 <= ord(char) <= 90:  # ASCII values for 'A' to 'Z'
-            capital_count += 1
-    return capital_count == 1
-
 def copy_to_clipboard(event):
     app.copy_to_clipboard(text_box.text)
 
@@ -168,14 +161,13 @@ def on_text_change(event):
     elif text == "2007":
         message += "No birth years.\n"
 
-    
-
     # Check for exactly one uppercase letter
-    if not check_single_capital(text):
+    capital_count = sum(1 for char in text if 'A' <= char <= 'Z')  # Count uppercase letters
+    if capital_count == 1:
+        global_score += 20
+    else:
         message += "Password must contain exactly one capital letter.\n"
         all_conditions_met = False
-    else:
-        global_score += 20
 
     # Check for number limit
     number_count = sum(char.isdigit() for char in text)
@@ -187,15 +179,14 @@ def on_text_change(event):
         global_score += 20
 
     # Check for at least one lowercase letter
-    
-    if re.search(r'[a-z]', text):
+    if any(char.islower() for char in text):
         global_score += 10
     else:
         message += "Password must contain at least one lowercase letter.\n"
         all_conditions_met = False
 
     # Check for special characters
-    special_characters = {'&', '%', '$', '@', '!', '*', '^', '#', '()','[]', '_', '-','+', '~','`'}
+    special_characters = {'&', '%', '$', '@', '!', '*', '^', '#', '()', '[]', '_', '-', '+', '~', '`'}
     if any(character in special_characters for character in text):
         global_score += 10
     else:
@@ -231,6 +222,7 @@ def on_text_change(event):
     message += f"\nPassword score: {int(global_score)}/100"  # Convert score to int for display
     label.text = message.strip()  # Strip any trailing whitespace
 
+# Create the app
 app = gp.GooeyPieApp('Password Checker')
 
 # Create the components
@@ -247,4 +239,6 @@ app.add(text_box, 1, 1, valign='middle')
 app.add(copy_btn, 1, 2, valign='middle')  # Add the copy button next to the text box
 app.add(label, 2, 1, column_span=2)
 
+# Run the app
 app.run()
+
