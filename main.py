@@ -116,14 +116,11 @@
 # app.add(label, 2, 1)
 
 # app.run()
-global score
 import gooeypie as gp
+import re
 
-
-def score = score_representation = "- - - - - - - - - -":
-for score in password == 100:
-    if score == 10 = message += "Secure password"
-
+# Global score variable
+global_score = 0
 
 def check_single_capital(password):
     capital_count = 0
@@ -132,15 +129,17 @@ def check_single_capital(password):
             capital_count += 1
     return capital_count == 1
 
-
 def copy_to_clipboard(event):
-    if all_conditions_met:
-        app.copy_to_clipboard(text_box.text)
+    app.copy_to_clipboard(text_box.text)
 
 def on_text_change(event):
+    global global_score
     text = text_box.text
     message = ""
     all_conditions_met = True
+
+    # Reset the score
+    global_score = 0
 
     # Initial check for length
     if len(text) < 8:
@@ -148,14 +147,15 @@ def on_text_change(event):
         all_conditions_met = False
     elif len(text) > 20:
         message += "Password must not exceed 20 characters.\n"
-        all_conditions_met = False
+        global_score -= 10  # Deduct 10 points for exceeding 20 characters
     else:
-        score = score + 20
+        global_score += 20
 
     # Check against list of common passwords
     common_passwords = ["123456", "password", "123456789", "12345678", "12345", "1234567", "1234567890", "Password", "Admin"]
     if text in common_passwords:
         message += "This is a common password.\n"
+        global_score /= 2  # Deduct half of the score if it's a common password
         all_conditions_met = False
 
     # Specific name checks
@@ -179,31 +179,60 @@ def on_text_change(event):
         message += "Password must contain exactly one capital letter.\n"
         all_conditions_met = False
     else:
-        score = score + 10
-    
-    
-
+        global_score += 20
 
     # Check for number limit
     number_count = sum(char.isdigit() for char in text)
     max_number_count = 3  # Maximum number count parameter
     if number_count > max_number_count:
         message += f"No more than {max_number_count} numbers are allowed.\n"
+        global_score -= 10  # Deduct 10 points for exceeding 3 numbers
+    else:
+        global_score += 20
+
+    # Check for at least one lowercase letter
+    if re.search(r'[a-z]', text):
+        global_score += 10
+    else:
+        message += "Password must contain at least one lowercase letter.\n"
         all_conditions_met = False
 
+    # Check for special characters
+    special_characters = {'@', '$', '!', '%', '*', '?', '&', '#'}
+    if any(character in special_characters for character in text):
+        global_score += 10
+    else:
+        message += "Password must contain at least one special character.\n"
+        all_conditions_met = False
 
-    #score
+    # Cap the global score at 100
+    if global_score > 100:
+        global_score = 100
+
+    # Prevent negative scores
+    if global_score < 0:
+        global_score = 0
+
+    # Generate the security message based on the score
+    if global_score == 100:
+        security_message = "Password is very secure."
+    elif global_score >= 80:
+        security_message = "Password is secure."
+    elif global_score >= 60:
+        security_message = "Password is moderately secure."
+    elif global_score >= 40:
+        security_message = "Password is somewhat secure."
+    else:
+        security_message = "Password is not secure."
 
     if all_conditions_met:
-        message = "Password is accepted."
+        message = f"Password is accepted. {security_message}"
         copy_btn.enabled = True  # Enable the button if all conditions are met
     else:
         copy_btn.enabled = False  # Disable the button if not all conditions are met
 
+    message += f"\nPassword score: {int(global_score)}/100"  # Convert score to int for display
     label.text = message.strip()  # Strip any trailing whitespace
-
-
-
 
 app = gp.GooeyPieApp('Password Checker')
 
@@ -222,4 +251,3 @@ app.add(copy_btn, 1, 2, valign='middle')  # Add the copy button next to the text
 app.add(label, 2, 1, column_span=2)
 
 app.run()
-
