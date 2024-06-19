@@ -238,8 +238,153 @@
 # app.add(label, 2, 1, column_span=2)
 import gooeypie as gp
 import re
+# import datetime
 
-# Global score variable
+# def calculate_age(event):
+#     today = datetime.date.today()
+#     dob = dob_dt.date
+#     difference = today - dob
+#     answer_lbl.text = f'You are {difference.days} days old!'
+
+# app = gp.GooeyPieApp('How old are you?')
+# app.width = 300
+
+# dob_lbl = gp.Label(app, 'When were you born?')
+# dob_dt = gp.Date(app)
+# how_many_btn = gp.Button(app, 'How many days old are you?', calculate_age)
+# answer_lbl = gp.Label(app, '')
+
+# current_year = datetime.date.today().year
+# dob_dt.year_range = [current_year - 100, current_year]
+# dob_dt.set_selector_order('MDY')
+
+# app.set_grid(4, 1)
+# app.add(dob_lbl, 1, 1, align='center')
+# app.add(dob_dt, 2, 1, align='center')
+# app.add(how_many_btn, 3, 1, align='center')
+# app.add(answer_lbl, 4, 1, align='center')
+
+# app.run()
+
+
+# # Global score variable
+# global_score = 0
+
+# def copy_to_clipboard(event):
+#     app.copy_to_clipboard(text_box.text)
+
+# def on_text_change(event):
+#     global global_score
+#     text = text_box.text
+#     message = ""
+#     all_conditions_met = True
+
+#     # Reset the score
+#     global_score = 20
+
+#     # Initial check for length
+#     if len(text) < 8:
+#         message += "Password must be at least 8 characters long.\n"
+#         all_conditions_met = False
+#     elif len(text) > 20:
+#         message += "Password must not exceed 20 characters.\n"
+#         all_conditions_met = False
+#     else:
+#         global_score += 20
+
+#     # Check against list of common passwords
+#     common_passwords = ["123456", "password", "123456789", "12345678", "12345", "1234567", "1234567890", "Password", "Admin"]
+#     if text in common_passwords:
+#         message += "This is a common password.\n"
+#         global_score -= 50  # Deduct 50 points for common passwords
+#         all_conditions_met = False
+
+#     # Check for exactly one uppercase letter
+#     capital_count = sum(1 for char in text if 'A' <= char <= 'Z')  # Count uppercase letters
+#     if capital_count == 1:
+#         global_score += 20
+#     else:
+#         message += "Password must contain exactly one capital letter.\n"
+#         all_conditions_met = False
+
+#     # Check for number limit (up to 3 digits)
+#     number_count = sum(char.isdigit() for char in text)
+#     if number_count <= 3:
+#         global_score += 20
+#         message += f"Number count: {number_count}/3\n"
+#     else:
+#         global_score -= 10  # Deduct 10 points for more than 3 digits
+#         message += f"No more than 3 digits are allowed.\n"
+#         all_conditions_met = False
+
+#     # Check for at least one lowercase letter
+#     if any(char.islower() for char in text):
+#         global_score += 20
+#     else:
+#         message += "Password must contain at least one lowercase letter.\n"
+#         all_conditions_met = False
+
+#     # Check for at least one special character
+#     special_characters = {'&', '%', '$', '@', '!', '*', '^', '#', '()', '[]', '_', '-', '+', '~', '`'}
+#     if any(character in special_characters for character in text):
+#         global_score += 20
+#     else:
+#         message += "Password must contain at least one special character.\n"
+#         all_conditions_met = False
+
+#     # Cap the global score at 100
+#     if global_score > 100:
+#         global_score = 100
+
+#     # Prevent negative scores
+#     if global_score < 0:
+#         global_score = 0
+
+#     # Generate the security message based on the score
+#     if global_score == 100:
+#         security_message = "Password is very secure."
+#         copy_btn.enabled = True  # Enable the button if score is exactly 100
+#     elif global_score >= 80:
+#         security_message = "Password is secure."
+#         copy_btn.enabled = True  # Enable the button if score is between 80-99
+#     elif global_score >= 60:
+#         security_message = "Password is moderately secure."
+#         copy_btn.enabled = False  # Disable the button if score is less than 80
+#     elif global_score >= 40:
+#         security_message = "Password is somewhat secure."
+#         copy_btn.enabled = False  # Disable the button if score is less than 80
+#     else:
+#         security_message = "Password is not secure."
+#         copy_btn.enabled = False  # Disable the button if score is less than 80
+
+#     if all_conditions_met:
+#         message = f"Password is accepted. {security_message}"
+#     else:
+#         copy_btn.enabled = False  # Disable the button if not all conditions are met
+
+#     message += f"\nPassword score: {int(global_score)}/100"  # Convert score to int for display
+#     label.text = message.strip()  # Strip any trailing whitespace
+    
+# app = gp.GooeyPieApp('Password Checker')
+
+# # Create the components
+# text_box = gp.Textbox(app, 30, 5)
+# text_box.add_event_listener('change', on_text_change)
+# label = gp.Label(app, 'Welcome to the Password Protection Checker. Please input your password above (No Personal information).')
+# copy_btn = gp.Button(app, 'Copy to Clipboard', copy_to_clipboard)
+# copy_btn.enabled = False  # Initially disable the button
+
+# # Set up the grid
+# app.set_grid(3, 2)
+# app.set_column_weights(1, 0)
+# app.add(text_box, 1, 1, valign='middle')
+# app.add(copy_btn, 1, 2, valign='middle')  # Add the copy button next to the text box
+# app.add(label, 2, 1, column_span=2)
+
+# # Run the app
+# app.run()
+import gooeypie as gp
+
 global_score = 0
 
 def copy_to_clipboard(event):
@@ -252,7 +397,7 @@ def on_text_change(event):
     all_conditions_met = True
 
     # Reset the score
-    global_score = 0
+    global_score = 20
 
     # Initial check for length
     if len(text) < 8:
@@ -336,22 +481,24 @@ def on_text_change(event):
 
     message += f"\nPassword score: {int(global_score)}/100"  # Convert score to int for display
     label.text = message.strip()  # Strip any trailing whitespace
-    
+
 app = gp.GooeyPieApp('Password Checker')
+app.width = 300
+app.height = 450  # Adjusted height to make it more like a portrait rectangle
 
 # Create the components
 text_box = gp.Textbox(app, 30, 5)
 text_box.add_event_listener('change', on_text_change)
-label = gp.Label(app, 'Welcome to the Password Protection Checker. Please input your password above (No Personal information).')
+label = gp.Label(app, 'Welcome to the Password Protection Checker. Please input your password below:')
 copy_btn = gp.Button(app, 'Copy to Clipboard', copy_to_clipboard)
 copy_btn.enabled = False  # Initially disable the button
 
 # Set up the grid
-app.set_grid(3, 2)
-app.set_column_weights(1, 0)
-app.add(text_box, 1, 1, valign='middle')
-app.add(copy_btn, 1, 2, valign='middle')  # Add the copy button next to the text box
-app.add(label, 2, 1, column_span=2)
+app.set_grid(4, 1)
+app.set_column_weights(1)
+app.add(label, 1, 1, align='center')
+app.add(text_box, 2, 1, align='center')
+app.add(copy_btn, 3, 1, align='center')
 
 # Run the app
 app.run()
