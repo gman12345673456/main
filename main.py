@@ -1,4 +1,7 @@
-import gooeypie as gp  # Assuming gooeypie library is used for GUI
+
+
+
+import gooeypie as gp
 
 global_score = 0
 
@@ -26,12 +29,12 @@ def on_text_change(event):
         global_score += 20
 
     # Check against list of common passwords
-    common_passwords = [ 
-        "Password", "password", "Qwerty12", "Abcdefg1", "Letmein1", "Monkey12", "Sunshine", 
-        "Admin123", "Welcome1", "Iloveyou", "Princess", "Football", "Dragon12", 
-        "Shadow12", "Master12", "Trustno1", "Whatever", "Freedom1", "Qwertyui", 
-        "Starwars", "Hello123", "Secret12", "Baseball", "Cheese12", "Jessica1", 
-        "Magic123", "Charlie1", "Michael1", "Cookie12", "Banana12", "Maggie12" 
+    common_passwords = [
+        "Password", "password", "Qwerty12", "Abcdefg1", "Letmein1", "Monkey12", "Sunshine",
+        "Admin123", "Welcome1", "Iloveyou", "Princess", "Football", "Dragon12",
+        "Shadow12", "Master12", "Trustno1", "Whatever", "Freedom1", "Qwertyui",
+        "Starwars", "Hello123", "Secret12", "Baseball", "Cheese12", "Jessica1",
+        "Magic123", "Charlie1", "Michael1", "Cookie12", "Banana12", "Maggie12"
     ]
 
     if text in common_passwords:
@@ -81,49 +84,52 @@ def on_text_change(event):
 
     # Generate the security message based on the score
     if global_score == 100:
-        security_message = "Password is very secure."
+        security_message = "Password is very secure 🔒."
         copy_btn.enabled = True  # Enable the button if score is exactly 100
     elif global_score >= 80:
-        security_message = "Password is secure."
+        security_message = "Password is secure 😎."
         copy_btn.enabled = True  # Enable the button if score is between 80-99
     elif global_score >= 60:
-        security_message = "Password is moderately secure."
+        security_message = "Password is moderately secure 🫤."
         copy_btn.enabled = False  # Disable the button if score is less than 80
     elif global_score >= 40:
-        security_message = "Password is somewhat secure."
+        security_message = "Password is somewhat secure 😬."
         copy_btn.enabled = False  # Disable the button if score is less than 80
     else:
-        security_message = "Password is not secure."
+        security_message = "Password is not secure 🚫."
         copy_btn.enabled = False  # Disable the button if score is less than 80
 
+    # Add the security message to the main message
     if all_conditions_met and global_score >= 80:
-        message = f"Password is accepted. {security_message}"
+        message = f"Password is accepted ✅. {security_message}"
     else:
-        copy_btn.enabled = False  # Disable the button if not all conditions are met
+        message += f"{security_message}\n"  # Append the security message to the main message
 
+    # Display the message
     message += f"\nPassword score: {int(global_score)}/100"  # Convert score to int for display
     label.text = message.strip()  # Strip any trailing whitespace
 
 app = gp.GooeyPieApp('Password Checker')
-app.width = 300
-app.height = 450  # Adjusted height to make it more like a portrait rectangle
+app.width = 500  # Adjusted width
+app.height = 500  # Adjusted height to fit the new layout
+
+# Load the image (ensure 'lock.png' is in the same directory as your script)
+lock_img = gp.Image(app, 'lock.png')  # Resize the image or adjust its layout
 
 # Create the components
 text_box = gp.Textbox(app, 30, 5)
 text_box.add_event_listener('change', on_text_change)
-label = gp.Label(app, 'Welcome to the Password Protection Checker 🔒.')
+label = gp.Label(app, 'Password Protection Checker 🔒.')
 copy_btn = gp.Button(app, 'Copy to Clipboard', copy_to_clipboard)
 copy_btn.enabled = False  # Initially disable the button
 
 # Set up the grid
-app.set_grid(4, 1)
+app.set_grid(5, 1)  # Increased to 5 rows to fit the image
 app.set_column_weights(1)
-app.add(label, 1, 1, align='center')
-app.add(text_box, 2, 1, align='center')
-app.add(copy_btn, 3, 1, align='center')
+app.add(lock_img, 1, 1, align='center')
+app.add(label, 2, 1, align='center')
+app.add(text_box, 3, 1, align='center')
+app.add(copy_btn, 4, 1, align='center')
 
 # Run the app
 app.run()
-
-
-
